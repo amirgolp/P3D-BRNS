@@ -1,0 +1,91 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | foam-extend: Open Source CFD                    |
+|  \\    /   O peration     | Version:     4.0                                |
+|   \\  /    A nd           | Web:         http://www.foam-extend.org         |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+
+    A 
+    {
+        solver          PBiCG;
+        preconditioner  DILU;
+        tolerance       1e-07;
+        relTol          0;
+    }
+
+    B 
+    {
+        solver          PBiCG;
+        preconditioner  DILU;
+        tolerance       1e-07;
+        relTol          0;
+    }
+
+    C 
+    {
+        solver          PBiCG;
+        preconditioner  DILU;
+        tolerance       1e-07;
+        relTol          0;
+    }
+
+    bio 
+    {
+        solver          PBiCG;
+        preconditioner  DILU;
+        tolerance       1e-07;
+        relTol          0;
+    }
+
+}
+PISO
+{
+   cAlpha 1.0;
+   cYi    1.0;
+   maxConcentration
+   {
+        Ca+2 8.984;
+        Cl-  17.982;
+        H+   1e-3;
+        OH-  1e-3;
+   }
+}
+PIMPLE
+{
+    pcRefCell 0;
+    pcRefValue 0;
+    cSK 0.1;
+    nSK 1;
+    cPc  0.1; 
+    cfcFilt 0.01;
+    cfcFiltRelax 0.999;
+    cphicFilt 0.01;
+    gPcCorr yes;
+
+
+    momentumPredictor no;
+    nOuterCorrectors 1;
+    nCorrectors     3;
+    nNonOrthogonalCorrectors 1;
+    nAlphaCorr      1;
+    nAlphaSubCycles 1;
+}
+SIMPLE
+{
+   nNonOrthogonalCorrectors 0;
+}
+
+// ************************************************************************* //

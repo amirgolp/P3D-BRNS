@@ -1,0 +1,21 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # run from this directory
+
+# Source tutorial run functions
+##. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+## Create the mesh
+# recreate the water field
+cp 0/alpha.water.org 0/alpha.water
+cp 0/M.org 0/M
+cp 0/H.org 0/H
+# create the base mesh
+blockMesh
+setFields
+
+#runApplication checkMesh
+
+interReactFoam
+
+
+# ----------------------------------------------------------------- end-of-file

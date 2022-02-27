@@ -1,0 +1,96 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1812                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      topoSetDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+actions
+(
+    /*{
+        name    F1;
+        type    faceSet;
+        action  new;
+        source  boxToFace;
+        sourceInfo { box (-0.00046 -1 -1) (0.00046 1 1); }
+    }*/
+
+// 6-actions patch generation: cut out 'filter1' from 'porewalls' 
+    { 
+        name    filter1; 
+        type    faceSet; 
+        action  new; 
+        source  patchToFace; 
+        sourceInfo 
+        { 
+            name "porewalls"; 
+        } 
+    } 
+    // cutting volume for nonCatalytic surface 
+    { 
+        name    tempset1; 
+        type    cellSet; 
+        action  new; 
+        source  boxToCell; 
+        sourceInfo 
+        { 
+            box (-0.00046 -0.00015 -1e-5)(0 0.00015 1e-5); 
+        } 
+    } 
+    // taking faces belonging to the cutting volume 
+    { 
+        name    tempset2; 
+        type    faceSet; 
+        action  new; 
+        source  cellToFace; 
+        sourceInfo 
+        { 
+            set        tempset1; 
+            option    all;    //Is there not better option, like only selecting boundary faces? 
+        } 
+    } 
+    // temporary clone of ceiling-face-zone 
+    { 
+        name    tempset3; 
+        type    faceSet; 
+        action  new; 
+        source  faceToFace; 
+        sourceInfo 
+        { 
+            set "filter1"; 
+        } 
+    } 
+    // removing the filter1 faces from the ceiling-faces-clone 
+    { 
+        name    tempset3; 
+        type    faceSet; 
+        action  delete; 
+        source  faceToFace; 
+        sourceInfo 
+        { 
+            set "tempset2"; 
+        } 
+    } 
+    // final filter1 patch = ceiling-faces - tempset3 
+    { 
+        name    filter1; //this is the final result to use in createPatchDict ! 
+        type    faceSet; 
+        action  delete; 
+        source  faceToFace; 
+        sourceInfo 
+        { 
+            set "tempset3"; 
+        } 
+    } 
+    //here ends the 6-actions sequence to cut a patch from an existing patch.
+);
+// ************************************************************************* //
