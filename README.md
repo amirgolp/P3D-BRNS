@@ -104,6 +104,7 @@ wmake
 ```
 Now navigate to the relative test-case fodler and in the shell, type the name of the solver.
 
-
+# Contact
+For any inquiries, contact amir.golparvar@ufz.de
 
 
