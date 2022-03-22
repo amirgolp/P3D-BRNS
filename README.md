@@ -6,7 +6,11 @@ test cases used in the main manuscript.
 
 # Instructions for running P3D-BRNS locally:
 
-The source code is developed in a linux-based environemnt (Linux Ubuntu 18.04) using OpenFOAM-4.0 extended version.
+The source code is developed in a linux-based environemnt (Linux Ubuntu 18.04) using OpenFOAM-4.0 extended version. The reaction network used for each scenario/case can be found in the last line of the file: "corresponding_solver_directory/Make/options". The solver will be looking for the shared object file (i.e. "*.so" in the same directory as the solver) in "FOAM_USER_LIBBIN".
+
+Important Note the BRNS shared objects are compiled using "GNU Fortran (GCC) 6.4.0", "gcc (GCC) 6.4.0" and "g++ (GCC) 6.4.0".
+
+
 
 ## Step 1: 
 First step is to install a working version of the OpenFOAM-4.0x. For this open a shell and type the followings:
